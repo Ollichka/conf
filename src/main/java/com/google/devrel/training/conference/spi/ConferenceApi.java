@@ -48,8 +48,8 @@ public class ConferenceApi {
 
     // TODO 1 Pass the ProfileForm parameter
     // TODO 2 Pass the User parameter
-    public Profile saveProfile(User user,ProfileForm pr) throws UnauthorizedException {
-    	
+    public Profile saveProfile(ProfileForm profileForm, User user) throws UnauthorizedException {
+
         String userId = null;
         String mainEmail = null;
         String displayName = "Your name will go here";
@@ -57,19 +57,19 @@ public class ConferenceApi {
 
         // TODO 2
         // If the user is not logged in, throw an UnauthorizedException
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
+        if(user==null){
+        	throw new UnauthorizedException("Authorization required");
         }
-
         // TODO 1
         // Set the teeShirtSize to the value sent by the ProfileForm, if sent
         // otherwise leave it as the default value
+        if(profileForm != null) teeShirtSize = profileForm.getTeeShirtSize();
 
-        teeShirtSize =  pr.getTeeShirtSize();
         // TODO 1
         // Set the displayName to the value sent by the ProfileForm, if sent
         // otherwise set it to null
-        displayName = pr.getDisplayName();
+        //add if else statement
+        if(profileForm != null) displayName = profileForm.getDisplayName();
         // TODO 2
         // Get the userId and mainEmail
         userId = user.getUserId();
@@ -80,14 +80,16 @@ public class ConferenceApi {
         if(displayName==null) displayName = extractDefaultDisplayNameFromEmail(mainEmail);
         // Create a new Profile entity from the
         // userId, displayName, mainEmail and teeShirtSize
-        Profile profile = getProfile(user);
-        if (profile == null)
-        profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
-        else
-        profile.update(displayName,teeShirtSize);
+      Profile profile = getProfile(user);
+      if(profile == null)
+      profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
+        //Profile profile = getProfile(user);
+      else
+        	profile.updating(displayName, teeShirtSize);
         // TODO 3 (In Lesson 3)
         // Save the Profile entity in the datastore
-        ofy().save().entity(profile).now();
+      ofy().save().entity(profile).now();
+
         // Return the profile
         return profile;
     }
@@ -110,10 +112,9 @@ public class ConferenceApi {
 
         // TODO
         // load the Profile Entity
-        String userId = user.getUserId();
-        Key key = Key.create(Profile.class,userId);
-        Profile profile = (Profile)ofy().load().key(key).now();
-
+        String userId = user.getUserId(); // TODO
+        Key<Profile> key = Key.create(Profile.class,userId); // TODO
+        Profile profile =ofy().load().key(key).now(); // TODO load the Profile entity
         return profile;
     }
 }

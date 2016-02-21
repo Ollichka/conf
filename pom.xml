@@ -100,6 +100,9 @@
                 <artifactId>appengine-maven-plugin</artifactId>
                 <version>${appengine.target.version}</version>
                 <configuration>
+                <jvmFlags> 
+                    <jvmFlag> -Dappengine.generated.dir=/tmp/blabla </jvmFlag> 
+                </jvmFlags> 
                     <enableJarClasses>false</enableJarClasses>
                 </configuration>
                 <executions>
