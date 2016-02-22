@@ -34,7 +34,7 @@ public class ProfileForm {
         return teeShirtSize;
     }
     
-    public static enum TeeShirtSize {
+    public static enum TeeShirtSize{
     	NOT_SPECIFIED,
         XS,
         S,
